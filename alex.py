@@ -134,7 +134,7 @@ def myclass():
     pyautogui.typewrite('11911126')
     pyautogui.press("tab")
     time.sleep(1)
-    pyautogui.typewrite('')  # Idhar apna password daal lena
+    pyautogui.typewrite('')
     pyautogui.press("enter")
     time.sleep(3)
 
@@ -142,11 +142,6 @@ def myclass():
         pyautogui.press("tab")
     pyautogui.press("enter")
     time.sleep(2)
-    # for k in range(15):  # for 1st class
-    #     pyautogui.press("tab")
-    # pyautogui.press("enter")
-    # time.sleep(5)
-
 
 def Temperature():
     city = query.split("in", 1)
@@ -219,7 +214,6 @@ if __name__ == "__main__":
 
         elif ("offline" in query) or ("off" in query):
             speak("Bye and Have a great Day Sir, alex now going offline")
-            print("Bye and Have a great Day Sir, alex now going offline")
             quit()
 
         elif ("logout" in query) or ("log out" in query):
