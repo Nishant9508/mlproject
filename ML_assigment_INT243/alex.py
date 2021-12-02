@@ -203,7 +203,7 @@ def TaskExecution():
 			speak("you told me to remember that  " + remember.read())
 
 		elif (" go offline" in query) or ("off" in query):
-			speak("Bye and Have a great Day Sir, JARVIS now going offline")
+			speak("Bye and Have a great Day Sir, Alex now going offline")
 			quit()
 
 		elif "shutdown" in query:
