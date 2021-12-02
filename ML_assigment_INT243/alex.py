@@ -1,7 +1,7 @@
-import pyttsx3 
+import speech_recognition as sr
+import pyttsx3
 import datetime
 import time
-import speech_recognition as sr 
 import wikipedia
 import webbrowser as wb
 import os
@@ -11,8 +11,12 @@ import pyjokes
 from wikipedia.wikipedia import search
 from bs4 import BeautifulSoup
 import requests
+from PIL import Image
 import wolframalpha
-import sys
+from sys import platform
+from GoogleNews import GoogleNews
+import cv2
+
 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
@@ -21,222 +25,322 @@ engine.setProperty('voice', voices[0].id)
 newVoiceRate = 180
 engine.setProperty('rate', newVoiceRate)
 
-
-def speak(audio):
-    engine.say(audio)
-    engine.runAndWait()
-
+googlenews=GoogleNews()
 
 def computational_intelligence(question):
-    try:
-        client = wolframalpha.Client('GWL394-2JYHWK299Q')
-        answer = client.query(question)
-        answer = next(answer.results).text
-        print(answer)
-        return answer
-    except:
-        speak("Sorry sir I couldn't fetch your question's answer. Please try again ")
-        return None
+	try:
+		client = wolframalpha.Client("GWL394-2JYHWK299Q")
+		answer = client.query(question)
+		answer = next(answer.results).text
+		print(answer)
+		return answer
+	except:
+		speak("Sorry sir I couldn't fetch your question's answer. Please try again ")
+		return None
 
 
-def startup():
-    speak("Initializing alex")
-    speak("Starting all systems applications")
-    speak("Installing and checking all drivers")
-    speak("Caliberating and examining all the core processors")
-    speak("Checking the internet connection")
-    speak("Wait a moment sir")
-    speak("All drivers are up and running")
-    speak("All systems have been activated")
-    #speak("Now I am online")
-    hour = int(datetime.datetime.now().hour)
-    if hour >= 0 and hour <= 12:
-        speak("Good Morning")
-    elif hour > 12 and hour < 18:
-        speak("Good afternoon")
-    else:
-        speak("Good evening")
-    speak("I am alex. Online and ready sir. Please tell me how may I help you")
+def speak(audio):
+	engine.say(audio)
+	engine.runAndWait()
+
+
+def wishme():
+	speak("Welcome")
+	hour = datetime.datetime.now().hour
+
+	if hour >= 6 and hour <= 12:
+		speak("Good Morning Sir")
+	elif hour > 12 and hour <= 16:
+		speak("Good Afternoon Sir")
+	elif hour > 16 and hour < 21:
+		speak("Good Evening Sir")
+	else:
+		speak("Good to See you Sir")
+
+	speak("I am Chin two, your personal voice assistant. How may i help you ?")
 
 
 def takeCommand():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Listening...")
-        r.pause_threshold = 1
-        audio = r.listen(source)
+	r = sr.Recognizer()
+	with sr.Microphone() as source:
+		print("Listening...")
+		r.pause_threshold = 1
+		audio = r.listen(source)
 
-    try:
-        print("Recognizing...")
-        query = r.recognize_google(audio, language='en=in')
-        print("You said : " + query)
-    except Exception as e:
-        print(e)
-        speak("say that again please")
-        return "None"
+	try:
+		print("Recognizing...")
+		query = r.recognize_google(audio, language='en=in')
+		print("You said : " + query)
+	except Exception as e:
+		print(e)
+		speak("say that again please")
+		return "None"
 
-    return query
+	return query
 
 
 def time1():
-    time1 = datetime.datetime.now().strftime("%I:%M:%S")
-    speak("The time right now is")
-    speak(time1)
-    print(time1)
+	time1 = datetime.datetime.now().strftime("%I:%M:%S")
+	speak("The time right now is")
+	speak(time1)
 
 
 def date():
-    year = int(datetime.datetime.now().year)
-    month = int(datetime.datetime.now().month)
-    date = int(datetime.datetime.now().day)
-    speak("Today's date is")
-    speak(date)
-    speak(month)
-    speak(year)
-    print(date)
-    print(month)
-    print(year)
+	year = int(datetime.datetime.now().year)
+	month = int(datetime.datetime.now().month)
+	date = int(datetime.datetime.now().day)
+	speak("Today's date is")
+	speak(date)
+	speak(month)
+	speak(year)
 
 
 def cpu():
-    usage = str(psutil.cpu_percent())
-    speak("Cpu is at "+usage)
-    print("Cpu is at "+usage)
+	usage = str(psutil.cpu_percent())
+	speak("Cpu is at "+usage)
 
+	battery = psutil.sensors_battery()
+	speak("Battery is at ")
+	speak(battery.percent)
+	speak("Percent")
 
-    battery = psutil.sensors_battery()
-    bat_percent = battery.percent
-    speak("Battery is at ")
-    speak(bat_percent) 
-    speak("percent")
-    print("Battery is at ") 
-    print(bat_percent)
-    print("percent")
 
 def screenshot():
-    img = pyautogui.screenshot()
-    img.save(r'C:\Users\ASUS\Desktop\mlproject\ScreenShots\ss.png')
+	img = pyautogui.screenshot()
+	img.save(r'')                                                                       
 
 
 def jokes():
-    speak(pyjokes.get_joke())
+	speak(pyjokes.get_joke())
 
 
 def myclass():
-    time.sleep(2)
-    wb.open_new('https://myclass.lpu.in/')
+	time.sleep(2)
+	wb.open_new('https://myclass.lpu.in/')
 
-    time.sleep(4)
+	time.sleep(4)
 
-    pyautogui.press("tab")
-    pyautogui.typewrite('11911126')
-    pyautogui.press("tab")
-    time.sleep(1)
-    pyautogui.typewrite('')  # Idhar apna password daal lena
-    pyautogui.press("enter")
-    time.sleep(3)
+	pyautogui.press("tab")
+	pyautogui.typewrite('11911240')
+	pyautogui.press("tab")
+	time.sleep(1)
+	pyautogui.typewrite('')       #Idhar my class ka password
+	pyautogui.press("enter")
+	time.sleep(3)
 
-    for i in range(5):
-        pyautogui.press("tab")
-    pyautogui.press("enter")
-    time.sleep(2)
-    # for k in range(15):  # for 1st class
-    #     pyautogui.press("tab")
-    # pyautogui.press("enter")
-    # time.sleep(5)
+	for i in range(5):
+		pyautogui.press("tab")
+	pyautogui.press("enter")
+	time.sleep(2)
+  
+def Temperature(query):
+	city = query.split("in", 1)
+	data = BeautifulSoup(requests.get(
+		f"https://www.google.com/search?q=weather+in+{city [1]}").text, "html.parser")
+	region = data.find("span", class_="BNeawe tAd8D AP7Wnd")
+	temp = data.find("div", class_="BNeawe iBp4i AP7Wnd").text
+	day = data.find("div", class_="BNeawe tAd8D AP7Wnd").text
+	weather = day.split("m", 1)
+	temperature = temp.split("C", 1)
+	speak("Its Currently"+weather[1]+" and " +
+		  temperature[0]+"celcuis"+"in"+region.text)
+	print("Its Currently"+weather[1]+" and " + temperature[0]+" celcuis "+"in "+region.text)
 
 
-def Temperature():
-    city = query.split("in", 1)
-    data = BeautifulSoup(requests.get(
-        f"https://www.google.com/search?q=weather+in+{city [1]}").text, "html.parser")
-    region = data.find("span", class_="BNeawe tAd8D AP7Wnd")
-    temp = data.find("div", class_="BNeawe iBp4i AP7Wnd").text
-    day = data.find("div", class_="BNeawe tAd8D AP7Wnd").text
-    weather = day.split("m", 1)
-    temperature = temp.split("C", 1)
-    speak("Its Currently"+weather[1]+" and " +
-          temperature[0]+"celcuis"+"in"+region.text)
-    print("Its Currently"+weather[1]+" and " + temperature[0]+" celcuis "+"in "+region.text)      
+def TaskExecution():
+	cv2.destroyAllWindows()
+	speak("verification Successful")
+  
+							
+	wishme()
 
-if __name__ == "__main__":
+	while True:
+		query = takeCommand().lower()
+		print(query)
 
-    # startup()
+		if "time" in query:
+			time1()
 
-    while True:
-        query = takeCommand().lower()
-        print(query)
+		elif "date" in query:
+			date()
 
-        if "time" in query:
-            time1()
+		elif "cpu" in query:
+			cpu()
 
-        elif "date" in query:
-            date()
+		elif "joke" in query:
+			jokes()
 
-        elif "cpu" in query:
-            cpu()
+		elif ("class" in query) or ("myclass" in query) or ("my class" in query):
+			speak("Opening My class")
+			myclass()
 
-        elif "screenshot" in query:
-            screenshot()
-            speak("Your screenshot has been taken.")
+		elif 'search' in query:
+			speak('Searching Wikipedia...')
+			query = query.replace("wikipedia", "")
+			results = wikipedia.summary(query, sentences=2)
+			speak("According to Wikipedia")
+			print(results)
+			speak(results)
+			
+		elif ("chrome" in query) or ("google" in query):
+			wb.open_new('https://google.com/')
 
-        elif "joke" in query:
-            jokes()
+		elif "play songs" in query:
+			songs_dir ='C://Users//ASUS//Documents/Dev./'                              #Idhar songs ka address
+			songs = os.listdir(songs_dir)
+			os.startfile(os.path.join(songs_dir,songs[0]))
 
-        elif ("class" in query) or ("myclass" in query) or ("my class" in query):
-            speak("Opening My class")
-            myclass()
+		elif "remember that" in query:
+			speak("What should i remember?")
+			data = takeCommand()
+			speak("You said me to remember,"+data)
+			remember = open("data.txt", "w")
+			remember.write(data)
+			remember.close()
 
-        elif "wikipedia" in query:
-            speak("Searching...")
-            query = query.replace("wikipedia", "")
-            result = wikipedia.summary(f'{query}', sentences=2)
-            speak(result)
-            print(result)
+		elif ("do you remember" in query) or ("do you remember anything" in query):
+			remember = open("data.txt", "r")
+			speak("you told me to remember that  " + remember.read())
 
-        elif "play songs" in query:
-            songs_dir = "D:\Songs"
-            songs = os.listdir(songs_dir)
-            os.startfile(os.path.join(songs_dir, songs[0]))
+		elif (" go offline" in query) or ("off" in query):
+			speak("Bye and Have a great Day Sir, JARVIS now going offline")
+			quit()
 
-        elif "remember that" in query:
-            speak("What should i remember?")
-            data = takeCommand()
-            speak("You said me to remember,"+data)
-            remember = open("data.txt", "w")
-            remember.write(data)
-            remember.close()
+		elif "shutdown" in query:
+			os.system("shutdown /s /t 1")
 
-        elif ("do you remember" in query) or ("do you remember anything" in query):
-            remember = open("data.txt", "r")
-            speak("you told me to remember that  " + remember.read())
+		elif "restart" in query:
+			os.system("shutdown /r /t 1")
 
-        elif ("vlcplayer" in query) or ("player" in query) or ("video player" in query):
-            speak("Opening VLC")
-            os.system("VLC")
+		elif "temperature" in query:
+			Temperature(query)
+		
+		elif 'open youtube' in query:      
+			wb.open("youtube.com")
+		
+		elif 'open google' in query:
+			wb.open("google.com")
+		
+		elif 'open stackoverflow' in query:
+			wb.open("stackoverflow.com")
+			  
+		
+		elif "switch the window" in query or "switch window" in query:
+			speak("Okay sir, Switching the window")
+			pyautogui.keyDown("alt")
+			pyautogui.press("tab")
+			time.sleep(1)
+			pyautogui.keyUp("alt")
+		 
+		elif "ip address" in query:
+			ip = requests.get('https://api.ipify.org').text
+			print(ip)
+			speak(f"Your ip address is {ip}")
 
-        elif ("offline" in query) or ("off" in query):
-            speak("Bye and Have a great Day Sir, alex now going offline")
-            print("Bye and Have a great Day Sir, alex now going offline")
-            quit()
+		elif "take screenshot" in query or "take a screenshot" in query or "capture the screen" in query:
+			speak("By what name do you want to save the screenshot?")
+			name =takeCommand()
+			speak("Alright sir, taking the screenshot")
+			img = pyautogui.screenshot()
+			name = f"{name}.png"
+			img.save(name)
+			speak("The screenshot has been succesfully captured")
+			
+		elif "show me the screenshot" in query:
+			try:
+				img = Image.open('C:\\Users\\ASUS\\Documents\\Dev\\Ml_assignment\\'+name)                     
+				img.show(img)
+				speak("Here it is sir")
+				time.sleep(2)
 
-        elif ("logout" in query) or ("log out" in query):
-            os.system("shutdown -l")
+			except IOError:
+				speak("Sorry sir, I am unable to display the screenshot")    
+		  
+		elif "what is" in query or "who is" in query:
+			question = query
+			answer = computational_intelligence(question)
+			speak(answer)
 
-        elif "shutdown" in query:
-            os.system("shutdown /s /t 1")
+		elif 'your master' in query:
+			if platform == "win64" or "darwin":
+				speak('Shahnawaz and Nishant are my masters. They created me couple of days ago')
+				
+		elif 'headlines' in query:
+			speak("getting news for you")
+			googlenews.get_news("todays news")
+			googlenews.result()
+			a=googlenews.gettext()
+			print(*a[1:5],sep=',')
+			speak(a[1:5])
 
-        elif "restart" in query:
-            os.system("shutdown /r /t 1")
+		elif 'tech news' in query:
+			speak("getting news for you")
+			googlenews.get_news("Latest tech news")
+			googlenews.result()
+			a=googlenews.gettext()
+			print(*a[1:5],sep=',')
+			speak(a[1:5])
+		
+		elif 'politics' in query:
+			speak("getting news for you")
+			googlenews.get_news("Latest politics news")
+			googlenews.result()
+			a=googlenews.gettext()
+			print(*a[1:5],sep=',')
+			speak(a[1:5])
+			
+if __name__== "__main__":
 
-        elif "weather in" in query:
-            Temperature()
+	recognizer = cv2.face.LBPHFaceRecognizer_create() 
+	recognizer.read('C:\\Users\\ASUS\\Documents\\Dev\\Ml_assignment\\trainer.yml')                                      
+	cascadePath = "C:\\Users\\ASUS\\Documents\\Dev\\Ml_assignment\\haarcascade_frontalface_default.xml"                 
+	faceCascade = cv2.CascadeClassifier(cascadePath) 
 
-        elif "what is" in query or "who is" in query:
-             question = query
-             answer = computational_intelligence(question)
-             speak(answer)
+	font = cv2.FONT_HERSHEY_SIMPLEX 
 
-        elif "goodbye" in query or "offline" in query or "bye" in query:
-            speak("Alright sir, going offline. It was nice working with you")
-            sys.exit()
+	id = 2 
+
+	names = ['','Nishant']                             
+
+
+	cam = cv2.VideoCapture(0, cv2.CAP_DSHOW) 
+	cam.set(3, 640) 
+	cam.set(4, 480) 
+
+	minW = 0.1*cam.get(3)
+	minH = 0.1*cam.get(4)
+
+	while True:
+
+		ret, img =cam.read() 
+
+		converted_image = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)  
+
+		faces = faceCascade.detectMultiScale( 
+			converted_image,
+			scaleFactor = 1.2,
+			minNeighbors = 5,
+			minSize = (int(minW), int(minH)),
+		   )
+
+		for(x,y,w,h) in faces:
+
+			cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2) 
+
+			id, accuracy = recognizer.predict(converted_image[y:y+h,x:x+w]) 
+
+			if (accuracy < 100):
+				id = names[id]
+				accuracy = "  {0}%".format(round(100 - accuracy))
+				TaskExecution()
+
+			else:
+				id = "unknown"
+				accuracy = "  {0}%".format(round(100 - accuracy))
+				speak("not authorized")
+				quit()
+		
+		cv2.imshow('camera',img)
+		k = cv2.waitKey(100) & 0xff 
+		if k == 27:
+			break
